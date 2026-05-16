@@ -266,3 +266,17 @@ This project follows the same open-source licensing approach as the original rep
 ## Acknowledgements
 
 Thanks to the open-source community and especially the original creator for providing the foundation of this project.
+
+---
+
+## ⚖️ Project Attribution & Academic Disclaimer
+
+### 1. Core Framework Credit
+* **Original Project Base:** This repository is an educational fork based on the [Cloud-Storage-Java-Spring-Boot](https://github.com/ahn-nath/Cloud-Storage-Java-Spring-Boot) project authored by **Nathaly Toledo (ahn-nath)**.
+* **Copyright Notice:** Because the original upstream repository does not contain a standard open-source license file, all foundational backend and structure rights belong to the original creator.
+
+### 2. Custom Enhancements & Academic Evaluation
+* **Developer:** Sudesh Malangner
+* **Development Year:** 2026
+* **Scope of Work:** This repository is maintained strictly for academic evaluation and submission. All custom configuration tweaks, 3-tier architectural adjustments, database setup changes, and optimizations were implemented on top of the base layer to fulfill project requirements.
+*
