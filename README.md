@@ -4,7 +4,7 @@
 ## Screenshots
 
 ### User Dashboard
-<img width="1050" height="900" alt="localhost_9090_home (1)" src="https://github.com/user-attachments/assets/e301d836-0acb-4917-8a03-d669de5b8299" />
+<img width="950" height="700" alt="localhost_9090_home (1)" src="https://github.com/user-attachments/assets/e301d836-0acb-4917-8a03-d669de5b8299" />
 
 ### Admin Panel
 <img width="90%" height="75%" alt="localhost_9090_admin" src="https://github.com/user-attachments/assets/1b53bbaf-329a-4745-867e-a3f1f264fa9c" />
