@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/Highlight-Blue.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body class="text-monospace text-uppercase">
+
+<div class="highlight-blue mb-4">
+    <div class="container text-center text-white py-4">
+        <h2>Admin Dashboard</h2>
+        <p>Manage users and every saved table record</p>
+    </div>
+</div>
+
+<div class="container">
+    <form th:action="@{/logout}" method="POST">
+        <button type="submit" class="btn btn-secondary float-right">Logout</button>
+    </form>
+
+    <div class="alert alert-primary" role="alert" th:text="${adminMessage}" th:if="${adminMessage}"></div>
+
+    <div class="row mb-4" style="clear: right;">
+        <div class="col-md mb-3">
+            <div class="border rounded p-3 h-100">
+                <h6>Users</h6>
+                <h2 th:text="${#lists.size(users)}">0</h2>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="border rounded p-3 h-100">
+                <h6>Files</h6>
+                <h2 th:text="${#lists.size(files)}">0</h2>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="border rounded p-3 h-100">
+                <h6>Notes</h6>
+                <h2 th:text="${#lists.size(notes)}">0</h2>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="border rounded p-3 h-100">
+                <h6>Credentials</h6>
+                <h2 th:text="${#lists.size(credentials)}">0</h2>
+            </div>
+        </div>
+        <div class="col-md mb-3">
+            <div class="border rounded p-3 h-100">
+                <h6>Reports</h6>
+                <h2 th:text="${#lists.size(reports)}">0</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav nav-tabs" role="tablist">
+        <a class="nav-item nav-link active" data-toggle="tab" href="#users" role="tab">Users</a>
+        <a class="nav-item nav-link" data-toggle="tab" href="#files" role="tab">Files</a>
+        <a class="nav-item nav-link" data-toggle="tab" href="#notes" role="tab">Notes</a>
+        <a class="nav-item nav-link" data-toggle="tab" href="#credentials" role="tab">Credentials</a>
+        <a class="nav-item nav-link" data-toggle="tab" href="#reports" role="tab">Reports</a>
+    </div>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="users" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table mt-3 table-bordered table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.userId}">1</td>
+                        <td th:text="${user.username}">username</td>
+                        <td th:text="${user.firstName}">first</td>
+                        <td th:text="${user.lastName}">last</td>
+                        <td>
+                            <form th:action="@{/admin/delete-user/{id}(id=${user.userId})}" method="POST"
+                                  onsubmit="return confirm('Delete this user and all related files, notes, credentials, and reports?');">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete User</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(users)}">
+                        <td colspan="5" class="text-center py-4">No users found.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="files" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table mt-3 table-bordered table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>File ID</th>
+                        <th>Owner User ID</th>
+                        <th>Owner Username</th>
+                        <th>File Name</th>
+                        <th>Content Type</th>
+                        <th>Size</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="file : ${files}">
+                        <td th:text="${file.fileId}">1</td>
+                        <td th:text="${file.userId}">1</td>
+                        <td th:text="${file.ownerUsername}">owner</td>
+                        <td th:text="${file.fileName}">file.txt</td>
+                        <td th:text="${file.contentType}">text/plain</td>
+                        <td th:text="${file.fileSize}">0</td>
+                        <td>
+                            <form th:action="@{/admin/delete-file/{id}(id=${file.fileId})}" method="POST"
+                                  onsubmit="return confirm('Delete this file record?');">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(files)}">
+                        <td colspan="7" class="text-center py-4">No files found.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="notes" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table mt-3 table-bordered table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Note ID</th>
+                        <th>Owner User ID</th>
+                        <th>Owner Username</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="note : ${notes}">
+                        <td th:text="${note.noteId}">1</td>
+                        <td th:text="${note.userId}">1</td>
+                        <td th:text="${note.ownerUsername}">owner</td>
+                        <td th:text="${note.noteTitle}">title</td>
+                        <td th:text="${note.noteDescription}">description</td>
+                        <td>
+                            <form th:action="@{/admin/delete-note/{id}(id=${note.noteId})}" method="POST"
+                                  onsubmit="return confirm('Delete this note record?');">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(notes)}">
+                        <td colspan="6" class="text-center py-4">No notes found.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="credentials" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table mt-3 table-bordered table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Credential ID</th>
+                        <th>Owner User ID</th>
+                        <th>Owner Username</th>
+                        <th>URL</th>
+                        <th>Credential Username</th>
+                        <th>Password Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="credential : ${credentials}">
+                        <td th:text="${credential.credentialId}">1</td>
+                        <td th:text="${credential.userId}">1</td>
+                        <td th:text="${credential.ownerUsername}">owner</td>
+                        <td th:text="${credential.url}">https://example.com</td>
+                        <td th:text="${credential.username}">account</td>
+                        <td>Encrypted</td>
+                        <td>
+                            <form th:action="@{/admin/delete-credential/{id}(id=${credential.credentialId})}" method="POST"
+                                  onsubmit="return confirm('Delete this credential record?');">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(credentials)}">
+                        <td colspan="7" class="text-center py-4">No credentials found.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="reports" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table mt-3 table-hover table-bordered">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Report ID</th>
+                        <th>Owner User ID</th>
+                        <th>Owner Username</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="report : ${reports}">
+                        <td th:text="${report.id}">1</td>
+                        <td th:text="${report.userId}">1</td>
+                        <td th:text="${report.username}">user</td>
+                        <td th:text="${report.subject}">subject</td>
+                        <td th:text="${report.message}">message</td>
+                        <td th:text="${report.createdAt}">date</td>
+                        <td>
+                            <form th:action="@{/admin/delete-report/{id}(id=${report.id})}" method="POST">
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Resolve</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(reports)}">
+                        <td colspan="7" class="text-center py-4">No active support reports.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery-slim.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
